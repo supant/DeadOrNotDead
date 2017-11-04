@@ -66,7 +66,7 @@ public class WikiAPI {
                 int retour=0;
                 ParseWiki pw=null;
                 try {
-                    pw = new ParseWiki(new String(response.body().bytes()),1);
+                    pw = new ParseWiki(new String(response.body().bytes()),1,"question");
                     retour = pw.parse();
                 } catch (IOException e) {
                     e.printStackTrace();

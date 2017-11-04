@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEventPage event) {
-        tvResult.setText(event.getTxtTmp());
+        tvResult.setText(event.getPersonne().toString());
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEventErreur event) {

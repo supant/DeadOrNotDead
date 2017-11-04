@@ -5,13 +5,13 @@ package com.example.antoine.deadornotdead;
  */
 
 public class MessageEventPage {
-    private String txtTmp;
+    private Personne paul;
 
-    public String getTxtTmp() {
-        return txtTmp;
+    public Personne getPersonne() {
+        return paul;
     }
 
-    public void setTxtTmp(String txtTmp) {
-        this.txtTmp = txtTmp;
+    public void setPersonne(Personne paul) {
+        this.paul = paul;
     }
 }

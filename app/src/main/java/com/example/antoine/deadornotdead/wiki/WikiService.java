@@ -18,7 +18,7 @@ public interface WikiService {
 
 
 //https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srnamespace=0&srlimit= 2 &srsearch= toto
-// remplacer espace par +
+// remplacer espace par + --> NON
 
 // https://en.wikipedia.org/w/api.php?action=query&format=json&prop=&export=1&titles=toto
 
