@@ -149,6 +149,7 @@ public class donActivity extends AppCompatActivity {
         repList.add(new Reponse("Corbier")) ;
         repList.add(new Reponse("Jean Rochefort")) ;
         repList.add(new Reponse("Jennifer Aniston")) ;
+        repList.add(new Reponse("Jacques Brel")) ;
 
         repAdapter.notifyDataSetChanged();
     }
@@ -194,8 +195,8 @@ public class donActivity extends AppCompatActivity {
         else tmp.setText("");
 
         ImageView tmpImage = findViewById(R.id.imageResult);
-        if (event.getPersonne().isMort()) tmpImage.setImageResource(R.drawable.mort);
-        else tmpImage.setImageResource(R.drawable.pasmort);
+        if (event.getPersonne().isMort()) tmpImage.setImageResource(R.drawable.mort_ico);
+        else tmpImage.setImageResource(R.drawable.pasmort_ico);
         mondebug.setText(event.getPersonne().toString());
 
         //Picasso.with(holder.photo.getContext()).load(movie.getPhoto()).into(holder.photo);
@@ -207,7 +208,7 @@ public class donActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "KO "+event.getErreur(), Toast.LENGTH_SHORT).show();
 
         ImageView tmpImage = findViewById(R.id.imageResult);
-        tmpImage.setImageResource(R.drawable.intero);
+        tmpImage.setImageResource(R.drawable.intero_ico);
         mondebug.setText(event.getErreur());
 
         TextView tmp = findViewById(R.id.nom);

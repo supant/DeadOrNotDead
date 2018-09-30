@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
@@ -13,30 +12,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/row_padding_vertical">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/imageResult"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingRight="@android:dimen/app_icon_size"
-        tools:paddingLeft="@android:dimen/app_icon_size">
-
-        <TextView
-            android:id="@+id/nom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="22dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_toLeftOf="@+id/nom"
-            android:layout_toStartOf="@+id/nom"
-            app:srcCompat="@android:drawable/presence_online" />
-    </RelativeLayout>
+        android:layout_height="50dp"
+        app:srcCompat="@android:drawable/btn_star" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,10 +24,20 @@
 
         <ImageView
             android:id="@+id/imageView"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_toRightOf="@+id/imageView"
+            android:textSize="22dp"/>
 
         <TextView
             android:id="@+id/datenaissance"
@@ -55,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/nom"
             android:layout_toEndOf="@+id/imageView"
             android:layout_toRightOf="@+id/imageView"
             android:textSize="20dp"/>
