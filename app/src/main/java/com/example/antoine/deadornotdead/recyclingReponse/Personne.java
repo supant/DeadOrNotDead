@@ -1,4 +1,4 @@
-package com.example.antoine.deadornotdead;
+package com.example.antoine.deadornotdead.recyclingReponse;
 
 /**
  * Created by Antoine on 04/11/2017.
@@ -99,7 +99,9 @@ public class Personne {
 
     public void calculAge() {
         try {
-            age = Integer.parseInt(dateDeces.split(" ")[2]) -  Integer.parseInt(dateNaissance.split(" ")[2]);
+            if (dateDeces!=null)
+                age = Integer.parseInt(dateDeces.split(" ")[2]) -  Integer.parseInt(dateNaissance.split(" ")[2]);
+            else age  = 2017 -  Integer.parseInt(dateNaissance.split(" ")[2]);
         } catch (Exception e) {
             age=-1;
         }

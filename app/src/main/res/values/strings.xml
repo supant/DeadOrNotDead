@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">DeadOrNotDead</string>
+    <string name="app_name">DeadOrNot</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main_test_rv">MainTestRVActivity</string>
+    <string name="title_activity_don">donActivity</string>
+    <string name="random">Random</string>
+    <string name="queryhintrecherche">Rechercher un nom</string>
+    <string name="debug">debug</string>
 </resources>

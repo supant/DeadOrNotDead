@@ -1,19 +1,19 @@
 package com.example.antoine.deadornotdead;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +30,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class donActivity extends AppCompatActivity {
 
     private TextView mondebug;
     private WikiAPI wikiApi;
     private RecyclerView recyclerView;
+    private LinearLayout personneView;
     private ReponseAdapter repAdapter;
     private List<Reponse> repList = new ArrayList<>();
     private int posRepClic;
@@ -42,20 +43,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_don);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mondebug = findViewById(R.id.debut_txt);
+        personneView =findViewById(R.id.personne);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_resultat);
+        wikiApi = new WikiAPI();
 
-        final SearchView searchView = findViewById(R.id.editText);
+        final SearchView searchView = findViewById(R.id.recherche_txt);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -64,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     wikiApi.getListTitle(Parametre.nombreResultats,"madonna");
                 }
+                if(recyclerView!=null) recyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
 
@@ -73,24 +71,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.button);
-        mondebug = findViewById(R.id.tvResult);
-        wikiApi = new WikiAPI();
-
-        button.setOnClickListener(new View.OnClickListener() {
+        ImageButton imageButton_back = findViewById(R.id.imageButton_back);
+        imageButton_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                if (searchView.getQuery().length()>0) {
-                    wikiApi.getListTitle(Parametre.nombreResultats,searchView.getQuery().toString());
-                } else {
-                    wikiApi.getListTitle(Parametre.nombreResultats,"madonna");
-                }
+            public void onClick(View arg0) {
+                remplir_rv_populaire();
             }
+
         });
-
-
-
+        remplir_rv_populaire();
     }
 
     @Override
@@ -127,11 +116,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEventListTitle event) {
+    public void init_RecyclerView() {
+        if(recyclerView!=null)  recyclerView.setVisibility(View.VISIBLE);
+        if(personneView!=null)  personneView.setVisibility(View.GONE);
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         if (repAdapter!=null) repAdapter.clear();
         repAdapter = new ReponseAdapter(repList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -143,16 +131,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Reponse reponseClick = repList.get(position);
                 posRepClic=position;
-                wikiApi.getPage(reponseClick.getValeurReponse());
-            }
+                if (posRepClic>0 || !reponseClick.getValeurReponse().equals("Les + populaires")) wikiApi.getPage(reponseClick.getValeurReponse());
 
+            }
             @Override
             public void onLongClick(View view, int position) {
 
             }
         }));
-
         recyclerView.setAdapter(repAdapter);
+    }
+
+    public void remplir_rv_populaire() {
+        init_RecyclerView();
+        repList.add(new Reponse("Les + populaires")) ;
+        repList.add(new Reponse("Madonna")) ;
+        repList.add(new Reponse("Corbier")) ;
+        repList.add(new Reponse("Jean Rochefort")) ;
+        repList.add(new Reponse("Jennifer Aniston")) ;
+
+        repAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEventListTitle event) {
+        init_RecyclerView();
 
         for (int i=0;i<event.getListTitle().size();i++) {
             repList.add(new Reponse(event.getListTitle().get(i))) ;
@@ -168,36 +171,40 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEventPage event) {
 
-       // Toast.makeText(getApplicationContext(), "OK "+event.getPersonne().getNom(), Toast.LENGTH_SHORT).show();
+
+        if(recyclerView!=null)  recyclerView.setVisibility(View.GONE);
+        if(personneView!=null)  personneView.setVisibility(View.VISIBLE);
+
+        // Toast.makeText(getApplicationContext(), "OK "+event.getPersonne().getNom(), Toast.LENGTH_SHORT).show();
 
         TextView tmp = findViewById(R.id.nom);
         if (event.getPersonne().getNom()!=null) tmp.setText(event.getPersonne().getNom());
-            else tmp.setText("");
+        else tmp.setText("");
         tmp = findViewById(R.id.datenaissance);
         if (event.getPersonne().getDateNaissance()!=null) tmp.setText("Date de naissance : "+event.getPersonne().getDateNaissance());
-            else tmp.setText("");
+        else tmp.setText("");
 
         tmp = findViewById(R.id.age);
         event.getPersonne().calculAge();
         if (event.getPersonne().getAge()>0) tmp.setText("Age : "+event.getPersonne().getAge()+"");
-            else tmp.setText("");
+        else tmp.setText("");
 
         tmp = findViewById(R.id.datedeces);
         if (event.getPersonne().getDateDeces()!=null) tmp.setText("Date de decès : "+event.getPersonne().getDateDeces());
-            else tmp.setText("");
+        else tmp.setText("");
 
         ImageView tmpImage = findViewById(R.id.imageResult);
         if (event.getPersonne().isMort()) tmpImage.setImageResource(R.drawable.mort);
-            else tmpImage.setImageResource(R.drawable.pasmort);
+        else tmpImage.setImageResource(R.drawable.pasmort);
         mondebug.setText(event.getPersonne().toString());
 
-       //Picasso.with(holder.photo.getContext()).load(movie.getPhoto()).into(holder.photo);
+        //Picasso.with(holder.photo.getContext()).load(movie.getPhoto()).into(holder.photo);
 
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEventErreur event) {
-        //Toast.makeText(getApplicationContext(), "KO "+event.getErreur(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "KO "+event.getErreur(), Toast.LENGTH_SHORT).show();
 
         ImageView tmpImage = findViewById(R.id.imageResult);
         tmpImage.setImageResource(R.drawable.intero);
@@ -214,4 +221,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }

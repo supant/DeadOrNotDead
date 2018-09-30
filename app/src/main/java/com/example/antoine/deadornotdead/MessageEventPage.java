@@ -1,5 +1,7 @@
 package com.example.antoine.deadornotdead;
 
+import com.example.antoine.deadornotdead.recyclingReponse.Personne;
+
 /**
  * Created by antoine.gagneux on 13/10/2017.
  */

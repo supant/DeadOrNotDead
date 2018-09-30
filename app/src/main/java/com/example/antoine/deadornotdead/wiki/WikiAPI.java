@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WikiAPI {
     private WikiService service;
-
+    private String texteRequete;
     public WikiAPI() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://en.wikipedia.org/w/")
@@ -57,6 +57,7 @@ public class WikiAPI {
 
     public void getPage(String texte) {
         //texte = texte.replace(" ","+");
+        texteRequete=texte;
         Call<ResponseBody>  req=service.getPage(texte);
         req.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -66,7 +67,7 @@ public class WikiAPI {
                 int retour=0;
                 ParseWiki pw=null;
                 try {
-                    pw = new ParseWiki(new String(response.body().bytes()),1,"question");
+                    pw = new ParseWiki(new String(response.body().bytes()),1,texteRequete);
                     retour = pw.parse();
                 } catch (IOException e) {
                     e.printStackTrace();
